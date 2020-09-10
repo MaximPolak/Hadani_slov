@@ -1,13 +1,38 @@
+def prevedeni_na_retezec(seznam):
+    retezec = ""
+    for i in seznam:
+        retezec += i
+    return retezec
+
 def vytiskni_uhodnute_znaky(slovo):
-    seznam_uhodnutych_pismen = []
-    pokusy = 3
+    uhodnuta_cast = ['-', '-', '-', '-']
+    pokusy = 5
     while pokusy > 0:
-        pismeno = input("Zadejte písmeno: ")
-        if pismeno in slovo:
-            if pismeno not in seznam_uhodnutych_pismen:
-                seznam_uhodnutych_pismen.append(pismeno)
+        vstup = input("Zadejte písmeno či slovo:  ").lower()
+        if len(vstup) == len(slovo):
+            if vstup == slovo:
+                print("VYHRÁL JSI!")
+                break
+            else:
+                pokusy -= 1
+                print("Zbývající pokusy:", pokusy)
+        elif len(vstup) == 1:
+            if vstup in slovo:
+                for pozice, znak in enumerate(slovo):
+                    if znak == vstup:
+                        uhodnuta_cast[pozice] = vstup
+                        print("DOBŘE!")
+                        print(uhodnuta_cast)
+                if prevedeni_na_retezec(uhodnuta_cast) == slovo:
+                    print("VYHRÁL JSI!")
+                    break
+            else:
+                pokusy -= 1
+                print("ŠPATNĚ!")
+                print("Zbývající pokusy:", pokusy)
         else:
-            pokusy -= 1 
-    print(seznam_uhodnutych_pismen)
+            print("ŠPATNÝ VSTUP, ZKUS ZADAT ZNOVU")
+    else:
+        print("PROHRÁL JSI!")
 
 vytiskni_uhodnute_znaky("ahoj")
