@@ -5,7 +5,9 @@ def prevedeni_na_retezec(seznam):
     return retezec
 
 def vytiskni_uhodnute_znaky(slovo):
-    uhodnuta_cast = ['-', '-', '-', '-']
+    uhodnuta_cast = []
+    for i in range(len(slovo)):
+        uhodnuta_cast.append("-")
     pokusy = 5
     while pokusy > 0:
         vstup = input("Zadejte písmeno či slovo:  ").lower()
