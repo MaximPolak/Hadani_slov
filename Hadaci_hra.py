@@ -10,31 +10,32 @@ def vytiskni_uhodnute_znaky(slovo):
         uhodnuta_cast.append("-")
     pokusy = 5
     while pokusy > 0:
-        vstup = input("Zadejte písmeno či slovo:  ").lower()
+        vstup = input("Zadej písmeno či slovo:  ").lower()
         if len(vstup) == len(slovo):
             if vstup == slovo:
-                print("VYHRÁL JSI!")
+                print("VYHRÁL/A JSI!")
                 break
             else:
                 pokusy -= 1
-                print("Zbývající pokusy:", pokusy)
+                print("ŠPATNĚ!")
         elif len(vstup) == 1:
             if vstup in slovo:
                 for pozice, znak in enumerate(slovo):
                     if znak == vstup:
                         uhodnuta_cast[pozice] = vstup
                         print("DOBŘE!")
-                        print(uhodnuta_cast)
+                        
                 if prevedeni_na_retezec(uhodnuta_cast) == slovo:
-                    print("VYHRÁL JSI!")
+                    print("VYHRÁL/A JSI!")
                     break
             else:
                 pokusy -= 1
                 print("ŠPATNĚ!")
-                print("Zbývající pokusy:", pokusy)
         else:
             print("ŠPATNÝ VSTUP, ZKUS ZADAT ZNOVU")
+        print(uhodnuta_cast)
+        print("Zbývající pokusy:", pokusy, "\n")
     else:
-        print("PROHRÁL JSI!")
+        print("PROHRÁL/A JSI!")
 
 vytiskni_uhodnute_znaky("ahoj")
