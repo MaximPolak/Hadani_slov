@@ -4,38 +4,53 @@ def prevedeni_na_retezec(seznam):
         retezec += i
     return retezec
 
-def vytiskni_uhodnute_znaky(slovo):
+def hadaci_hra(slovo):
+    slovo = slovo.lower()
     uhodnuta_cast = []
     for i in range(len(slovo)):
         uhodnuta_cast.append("-")
     pokusy = 5
+    print(uhodnuta_cast)
+    print("Máš", pokusy, "pokusů""\n")
     while pokusy > 0:
         vstup = input("Zadej písmeno či slovo:  ").lower()
         if len(vstup) == len(slovo):
             if vstup == slovo:
-                print("VYHRÁL/A JSI!")
-                break
+                stav = "výhra"
             else:
-                pokusy -= 1
-                print("ŠPATNĚ!")
+                stav = "špatně"
         elif len(vstup) == 1:
             if vstup in slovo:
-                for pozice, znak in enumerate(slovo):
-                    if znak == vstup:
-                        uhodnuta_cast[pozice] = vstup
-                        print("DOBŘE!")
-                        
+                if vstup in uhodnuta_cast:
+                    print("\n""Pozor, toto písmeno si již uhádnul/a!")
+                    stav = " "
+                else:
+                    for pozice, znak in enumerate(slovo):
+                        if znak == vstup:
+                            uhodnuta_cast[pozice] = vstup
+                            stav = "dobře"            
                 if prevedeni_na_retezec(uhodnuta_cast) == slovo:
-                    print("VYHRÁL/A JSI!")
-                    break
+                    stav = "výhra"
             else:
-                pokusy -= 1
-                print("ŠPATNĚ!")
+                stav = "špatně"
         else:
-            print("ŠPATNÝ VSTUP, ZKUS ZADAT ZNOVU")
-        print(uhodnuta_cast)
+            stav = " "
+            print("\n""Špatný vstup, zkus zadat znovu!")
+        
+        #tisknutí dle stavu
+        if stav == "výhra":
+            print("\n""VYHRÁL/A JSI!")
+            break
+        elif stav == "dobře":
+            print("\n""SPRÁVNĚ")
+        elif stav == "špatně":
+            pokusy -= 1
+            print("\n""ŠPATNĚ")
+        else:
+            pokusy -= 1
+        print("Hádané slovo:", prevedeni_na_retezec(uhodnuta_cast))
         print("Zbývající pokusy:", pokusy, "\n")
     else:
         print("PROHRÁL/A JSI!")
 
-vytiskni_uhodnute_znaky("ahoj")
+hadaci_hra("autobus")
