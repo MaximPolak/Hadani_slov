@@ -1,49 +1,56 @@
+import enum
+
 class GameOverError(Exception):
     pass
 
+class Stav(enum.Enum):
+    VYHRA = 1
+    HRA = 0
+    PROHRA = -1
+
 class Kolo:
-    def __init__(self, slovo: str, pocet_pokusu: int, stav="HRA"):
+    def __init__(self, slovo: str, pocet_pokusu: int):
         self.slovo, self.pocet_pokusu = slovo, pocet_pokusu
         self.neuhodnuta_pismena = set(self.slovo)
-        self.stav = stav
-    def uhodnuti_pismene(self, pismeno: str) -> bool:
-        if len(pismeno) != 1:
-            return None
-        if pismeno in self.slovo:
-            self.neuhodnuta_pismena.discard(pismeno)
-            self.obnov_stav()
-            self.hraje_se()
-            return True
-        else:
-            self.pocet_pokusu -= 1  
-            self.obnov_stav()
-            self.hraje_se()
-            return False
+        self.stav = Stav.HRA
         
     def ukaz_uhodnuta(self) -> str:
         retezec = ""
         for pismeno in self.slovo:
             retezec += "_" if pismeno in self.neuhodnuta_pismena else pismeno
         return retezec
-    def uhodnuti_slova(self, slovo) -> bool:
-        if len(slovo) == 1:
-            return None
-        if slovo == self.slovo:
-            self.neuhodnuta_pismena.clear()
-            self.obnov_stav()
-            self.hraje_se()
-            return True
-        else:
-            self.pocet_pokusu -= 1
-            self.obnov_stav()
-            self.hraje_se()
-            return False
 
-    def hraje_se(self):
-        if self.stav != "HRA":
+    def hraje_se(self) -> None:
+        if self.stav != Stav.HRA:
             raise GameOverError
-    def obnov_stav(self):
-        if self.neuhodnuta_pismena == set():
-            self.stav = "VÝHRA"
+
+    def obnov_stav(self) -> None:
+        if not self.neuhodnuta_pismena:
+            self.stav = Stav.VYHRA
         elif self.pocet_pokusu == 0:
-            self.stav = "PROHRA"
+            self.stav = Stav.PROHRA
+    
+    def uhodni(self, vstup):
+        self.hraje_se()
+        if len(vstup) != 1 and len(vstup) != len(self.slovo):
+            raise ValueError("špatný vstup")
+        self.hraje_se()
+        if len(vstup) == 1:
+            
+            if vstup in self.slovo:
+                self.neuhodnuta_pismena.discard(vstup)
+                uspech = True
+            else:
+                uspech = False
+        else:
+            if vstup == self.slovo:
+                self.neuhodnuta_pismena.clear()
+                uspech = True
+            else:
+                
+                uspech = False
+
+        if not uspech:
+            self.pocet_pokusu -= 1
+        self.obnov_stav()
+        return uspech
